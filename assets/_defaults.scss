@@ -2,16 +2,32 @@
 $padding-1: 1px !default;
 $padding-4: 0.25rem !default;
 $padding-8: 0.5rem !default;
+$padding-12: 0.75rem !default;
 $padding-16: 1rem !default;
+$padding-20: 1.25rem !default;
+$padding-24: 1.5rem !default;
+$padding-40: 2.5rem !default;
+$padding-48: 3rem !default;
 
 $body-min-width: 20rem !default;
+$body-max-width: 40rem !default;
 $container-max-width: 80rem !default;
+
+$preview-height: 170px !default;
+$preview-width: 200px !default;
+$preview-mobile-width: 160px !default;
+$preview-mobile-height: 160px !default;
 
 $menu-width: 16rem !default;
 $toc-width: 16rem !default;
 
 $mobile-breakpoint: $menu-width + $body-min-width * 1.2 + $toc-width !default;
 
+$font-size-base: 16px !default;
+$font-size-12: 12px !default;
+$font-size-20: 20px !default;
+$font-size-24: 24px !default;
+$font-size-40: 40px !default;
 :root {
   --font-size: 16px;
   --font-size-smaller: 0.875rem;

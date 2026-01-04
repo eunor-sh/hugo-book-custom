@@ -1,0 +1,19 @@
+{{ define "main" }}
+<article class="markdown book-article">
+  <div class="list-header">
+    <h1><i class="fa-solid fa-tags"></i> Tags</h1>
+    <p>전체 태그 <em class="list-count">{{ len .Data.Terms }}</em></p>
+  </div>
+ 
+  <div class="tag-chips">
+    {{ range .Data.Terms.ByCount }}
+    <div class="tag-item">
+      <a href="{{ .Page.RelPermalink }}" class="tag-link">
+        <span class="tag-name">{{ .Page.Title }}</span>
+        <span class="tag-count">({{ .Count }})</span>
+      </a>
+    </div>
+    {{ end }}
+  </div>
+</article>
+{{ end }}

@@ -1,0 +1,40 @@
+<article class="post-item">
+ 
+  <div class="post-meta">
+    <!-- 게시글 작성일 -->
+    <time datetime="{{ .Date.Format "2006-01-02" }}">
+      {{ .Date.Format "2006년 01월 02일" }}
+    </time>
+    <!-- 카테고리 목록이 추가될 위치 -->
+  </div>
+ 
+  <div class="post-content-area{{ if .Params.cover }} has-cover{{ end }}">
+    <div class="post-text-area">
+      <!-- 게시글 제목 -->
+      <h2 class="post-title">
+        <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+      </h2>
+ 
+      <!-- 게시글 요약 -->
+      {{ $summary := cond .Description .Description (cond .Summary .Summary "") }}
+      {{ if $summary }}
+      <div class="post-summary">
+        {{ $summary | plainify | truncate 148 }}
+      </div>
+      <div class="post-summary-mobile">
+        {{ $summary | plainify | truncate 72 }}
+      </div>
+      {{ end }}
+ 
+      <!-- 태그 목록이 추가될 위치 -->
+    </div>
+ 
+    <!-- 커버 이미지 -->
+    {{ if .Params.cover }}
+    <div class="post-cover">
+      <img src="{{ .Params.cover | absURL }}" alt="Cover Image" class="post-cover-img">
+    </div>
+    {{ end }}
+  </div>
+ 
+</article>

@@ -100,6 +100,10 @@ a .book-icon {
   margin-top: 0;
   margin-bottom: $padding-16;
 
+  a{
+    justify-content: center;
+  }
+
   img {
     height: 1.5em;
     width: 1.5em;
@@ -107,10 +111,14 @@ a .book-icon {
 }
 
 .book-menu {
-  flex: 0 0 $menu-width;
-  font-size: var(--font-size-smaller);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: $menu-width;
+  flex-shrink: 0;
 
   .book-menu-content {
+    background: var(--gray-200);
     width: $menu-width;
     padding: $padding-16;
 
@@ -178,8 +186,10 @@ body[dir="rtl"] .book-menu {
 }
 
 .book-page {
+  max-width: $body-max-width;
   min-width: $body-min-width;
-  flex-grow: 1;
+  margin: 0 auto;
+  flex: 1 1 0;
   padding: $padding-16;
 }
 
@@ -208,6 +218,12 @@ body[dir="rtl"] .book-menu {
 }
 
 .book-header {
+  display: block;
+  position: sticky;
+  opacity: 0.9;
+  top: 0;
+  background-color: var(--body-background);
+  padding: 1rem;
   margin-bottom: $padding-16;
 
   label {
@@ -293,6 +309,11 @@ body[dir="rtl"] .book-menu {
 }
 
 .book-toc {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: $menu-width;
+  flex-shrink: 0;
   flex: 0 0 $toc-width;
   font-size: var(--font-size-smallest);
 
@@ -360,10 +381,10 @@ body[dir="rtl"] .book-menu {
     visibility: hidden;
     margin-inline-start: -$menu-width;
     z-index: 1;
+  }
 
-    .book-menu-content {
-      background: var(--body-background);
-    }
+  .book-menu-content {
+    background: var(--body-background);
   }
 
   .book-toc {
@@ -427,5 +448,20 @@ body[dir="rtl"] .book-menu {
   .book-menu .book-menu-content,
   .book-toc .book-toc-content {
     padding: $padding-16 * 2 $padding-16;
+  }
+}
+
+#TableOfContents {
+  margin-top: 2rem;
+  padding-left: 1rem;
+  border-left: 1px solid var(--toc-font-color,#888888);
+ 
+  a {
+    color: var(--toc-font-color, #000);
+  }
+
+  a.active {
+    color: var(--toc-active-color, #000);
+    font-weight: bold;
   }
 }

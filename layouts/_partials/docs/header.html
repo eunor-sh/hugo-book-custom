@@ -4,6 +4,7 @@
   </label>
 
   <h3>{{ partial "docs/title" . }}</h3>
+  <h3>  <a href="{{ .Site.BaseURL }}" class="site-title">{{ .Site.Title }}</a></h3>
 
   <label for="toc-control">
     {{ if partial "docs/toc-show" . }}

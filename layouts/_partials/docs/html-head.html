@@ -58,3 +58,8 @@ https://github.com/alex-shpak/hugo-book
     integrity="{{ .Data.Integrity }}" crossorigin="anonymous"
   {{- end -}}
 {{- end -}}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" crossorigin="anonymous" />
+
+{{- $tocHighlightJS := resources.Get "toc-highlight.js" | resources.ExecuteAsTemplate "toc-highlightjs" . | resources.Minify | resources.Fingerprint }}
+<script defer src="{{ partial "docs/links/resource-precache" $tocHighlightJS }}" {{ template "integrity" $tocHighlightJS }}></script>

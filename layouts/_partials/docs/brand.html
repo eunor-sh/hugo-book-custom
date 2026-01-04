@@ -1,3 +1,11 @@
+<div class="sidebar-profile">
+  <div class="profile-img-wrap">
+    <a href="{{ .Site.BaseURL }}">
+      <img src="{{ .Site.Params.BookMenu.profileImage }}" alt="Profile" class="profile-img" />
+    </a>
+  </div>
+</div>
+
 <h2 class="book-brand">
   <a class="flex align-center" href="{{ cond (not .Site.Home.File) .Sites.Default.Home.RelPermalink .Site.Home.RelPermalink }}">
     {{- with .Site.Params.BookLogo -}}
@@ -6,3 +14,18 @@
     <span>{{ .Site.Title }}</span>
   </a>
 </h2>
+
+<div class="sidebar-social">
+  <a href="{{ .Site.Params.BookMenu.githubLink }}" target="_blank" title="GitHub" {{ if not .Site.Params.BookMenu.githubLink }}class="disabled"{{ end }}>
+    <i class="fa-brands fa-github" style="font-size: 30px;"></i>
+  </a>
+  <a href="{{ .Site.Params.BookMenu.discordLink }}" target="_blank" title="Discord" {{ if not .Site.Params.BookMenu.discordLink }}class="disabled"{{ end }}>
+    <i class="fa-brands fa-discord" style="font-size: 30px;"></i>
+  </a>
+  <a href="{{ .Site.Params.BookMenu.folderLink }}" target="_blank" title="Folder" {{ if not .Site.Params.BookMenu.folderLink }}class="disabled"{{ end }}>
+    <i class="fa-solid fa-folder-open" style="font-size: 30px;"></i>
+  </a>
+  <a href="{{ "/tags/" | relURL }}" title="Tags">
+    <i class="fa-solid fa-tags" style="font-size: 30px;"></i>
+  </a>
+</div>

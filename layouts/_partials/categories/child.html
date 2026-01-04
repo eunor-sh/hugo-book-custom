@@ -1,0 +1,55 @@
+{{ define "main" }}
+<article class="markdown book-article">
+ 
+  <!-- front matter에서 `parent` 파라미터를 부모 카테고리 명칭으로, 제목을 자식 카테고리 명칭으로 인식 -->
+  {{ $currentCategories := partial "categories/value" (slice .Params.parent .Title) }}
+  {{ $pages := slice }}
+ 
+  <!-- 모든 "posts" 경로의 게시글들을 순회하면서 -->
+  {{ range where .Site.RegularPages "Section" "posts" }}
+    {{ $pageCategories := partial "categories/value" .Params.categories }}
+ 
+    <!-- 게시글의 전체 카테고리가 현재 카테고리와 같으면 `$pages` 배열에 추가 -->
+    {{ if eq $currentCategories $pageCategories }}
+      {{ $pages = $pages | append . }}
+    {{ end }}
+  {{ end }}
+ 
+  <div class="list-header">
+    <h1><i class="fa-solid fa-file"></i> {{ .Title }}</h1>
+    <p>전체 글 <em class="list-count">{{ len $pages }}</em></p>
+  </div>
+ 
+  <!-- 부모 카테고리를 가리키는 `parent` 파라미터로 바로가기 링크를 생성 -->
+  {{ if .Params.parent }}
+  <div class="categories-section">
+    <h2>상위 카테고리</h2>
+    <div class="category-chips">
+      <div class="category-item">
+        <a href="{{ "/categories/" | relURL }}{{ .Params.parent | urlize }}/" class="category-link">
+          <span class="category-name"><i class="fa-solid fa-folder-open"></i> {{ .Params.parent }}</span>
+        </a>
+      </div>
+    </div>
+  </div>
+  {{ end }}
+ 
+  {{ if $pages }}
+  <div class="post-list">
+    {{ $paginate := .Paginate $pages 10 }}
+    <div class="post-list">
+      {{ range $paginate.Pages }}
+        {{ partial "docs/post-item.html" . }}
+      {{ end }}
+    </div>
+ 
+    {{ partial "docs/pagination.html" $paginate }}
+  </div>
+  {{ else }}
+  <div class="post-list empty-list">
+    <p>이 카테고리에 게시글이 없습니다.</p>
+  </div>
+  {{ end }}
+ 
+</article>
+{{ end }}

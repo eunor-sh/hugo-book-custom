@@ -1,0 +1,63 @@
+{{ define "main" }}
+<article class="markdown book-article">
+ 
+  <!-- 제목을 부모 카테고리 명칭으로 인식 -->
+  {{ $currentCategory := partial "categories/value-first" (slice .Title) }}
+  {{ $pages := slice }}
+  {{ $subCategories := slice }}
+ 
+  <!-- 모든 "posts" 경로의 게시글들을 순회하면서 -->
+  {{ range where .Site.RegularPages "Section" "posts" }}
+    {{ $pageCategory := partial "categories/value-first" .Params.categories }}
+ 
+    <!-- 게시글의 첫 번째 카테고리가 현재 부모 카테고리와 같으면 `$pages` 배열에 추가 -->
+    {{ if eq $currentCategory $pageCategory }}
+      {{ $pages = $pages | append . }}
+      {{ $subCategory := partial "categories/value-second" .Params.categories }}
+      <!-- 게시글의 두 번째 카테고리가 하위 카테고리 목록에 없으면 `$subCategories` 배열에 추가 -->
+      {{ if not (in $subCategories $subCategory) }}
+        {{ $subCategories = $subCategories | append $subCategory }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+ 
+  <div class="list-header">
+    <h1><i class="fa-solid fa-folder"></i> {{ .Title }}</h1>
+    <p>전체 글 <em class="list-count">{{ len $pages }}</em></p>
+  </div>
+ 
+  <!-- 모든 하위 카테고리들에 대한 바로가기 링크를 나열 -->
+  {{ if $subCategories }}
+  <div class="categories-section">
+    <h2>하위 카테고리</h2>
+    <div class="category-chips">
+      {{ range $subCategory := $subCategories }}
+      <div class="category-item">
+        <a href="{{ "/categories/" | relURL }}{{ $currentCategory | urlize }}/{{ $subCategory | urlize }}" class="category-link">
+          <span class="category-name"><i class="fa-solid fa-file"></i> {{ $subCategory }}</span>
+        </a>
+      </div>
+      {{ end }}
+    </div>
+  </div>
+  {{ end }}
+ 
+  {{ if $pages }}
+  <div class="post-list">
+    {{ $paginate := .Paginate $pages 10 }}
+    <div class="post-list">
+      {{ range $paginate.Pages }}
+        {{ partial "docs/post-item.html" . }}
+      {{ end }}
+    </div>
+ 
+    {{ partial "docs/pagination.html" $paginate }}
+  </div>
+  {{ else }}
+  <div class="post-list empty-list">
+    <p>이 카테고리에 게시글이 없습니다.</p>
+  </div>
+  {{ end }}
+ 
+</article>
+{{ end }}

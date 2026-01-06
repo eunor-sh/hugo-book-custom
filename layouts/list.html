@@ -1,1 +1,18 @@
-{{ define "dummy" }}{{ end }}
+{{ define "main" }}
+<article class="markdown book-article">
+  <div class="list-header">
+    <h1><i class="fa-solid fa-tag"></i> {{ .Title }}</h1>
+    <p>전체 글 <em class="list-count">{{ len .Pages }}</em></p>
+  </div>
+ 
+  {{ $paginator := .Paginate .Pages 10 }}
+ 
+  <div class="post-list">
+    {{ range $paginator.Pages }}
+      {{ partial "docs/post-item.html" . }}
+    {{ end }}
+  </div>
+ 
+  {{ partial "docs/pagination.html" $paginator }}
+</article>
+{{ end }}

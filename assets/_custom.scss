@@ -156,32 +156,6 @@
     object-position: center;
   }
 }
- 
-@media (max-width: $body-max-width) {
-  .post-title {
-    font-size: $font-size-20; // 모바일 사이즈에서 제목 텍스트 크기를 줄이기
-  }
- 
-  .post-summary {
-    display: none; // 모바일 사이즈에서 기본 요약 텍스트를 숨기기
-  }
- 
-  .post-summary-mobile {
-    display: block; // 모바일 사이즈에서 모바일 전용 요약 텍스트를 표시하기
-  }
- 
-  .post-content-area.has-cover {
-    // 모바일 사이즈에서 커버 이미지 크기를 줄이고 정사각형 비율로 변경
-    .post-cover {
-      width: $preview-mobile-width; // 160px;
-      height: $preview-mobile-height; // 160px;
-    }
- 
-    .post-text-area {
-      min-height: $preview-mobile-height; // 160px;
-    }
-  }
-}
 
 .pagination {
   // 이전 버튼, 페이지 링크, 다음 버튼을 정렬
@@ -233,7 +207,7 @@
 }
  
 .pagination-nav {
-  width: 4rem;
+  width: 4.3rem;
  
   &.disabled {
     // 이전, 다음 페이지 그룹이 없으면 버튼을 비활성화
@@ -288,6 +262,30 @@
   .pagination-nav {
     order: 2;
   }
+
+  .post-title {
+    font-size: $font-size-20; // 모바일 사이즈에서 제목 텍스트 크기를 줄이기
+  }
+ 
+  .post-summary {
+    display: none; // 모바일 사이즈에서 기본 요약 텍스트를 숨기기
+  }
+ 
+  .post-summary-mobile {
+    display: block; // 모바일 사이즈에서 모바일 전용 요약 텍스트를 표시하기
+  }
+ 
+  .post-content-area.has-cover {
+    // 모바일 사이즈에서 커버 이미지 크기를 줄이고 정사각형 비율로 변경
+    .post-cover {
+      width: $preview-mobile-width; // 160px;
+      height: $preview-mobile-height; // 160px;
+    }
+ 
+    .post-text-area {
+      min-height: $preview-mobile-height; // 160px;
+    }
+  }
 }
 
 .list-header {
@@ -336,9 +334,25 @@
     align-items: center;
     gap: $padding-4;
     padding: $padding-8 $padding-12;
+    background-color: var(--gray-200);
+    border-radius: 7px;
+    color: #000;
+    transition: all 0.2s ease-in-out;
+
+    &:visited {
+      color: #000 !important;
+      text-decoration: none;
+    }
+
+    &:hover {
+      background-color: #dfdfdf !important;
+      color: #000 !important;
+      transform: translateY(-4px);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
  
     .tag-name {
-      font-weight: 500;
+      font-weight: 600;
     }
  
     .tag-count {
@@ -362,6 +376,7 @@
     align-items: center;
     gap: $padding-4;
     padding: $padding-8 $padding-12;
+    background-color: var(--gray-200);
  
     .category-name {
       font-weight: 500;

@@ -9,8 +9,8 @@ $padding-24: 1.5rem !default;
 $padding-40: 2.5rem !default;
 $padding-48: 3rem !default;
 
-$body-min-width: 20rem !default;
-$body-max-width: 40rem !default;
+$body-min-width: 40rem !default;
+$body-max-width: 50rem !default;
 $container-max-width: 80rem !default;
 
 $preview-height: 170px !default;
@@ -25,6 +25,8 @@ $mobile-breakpoint: $menu-width + $body-min-width * 1.2 + $toc-width !default;
 
 $font-size-base: 16px !default;
 $font-size-12: 12px !default;
+$font-size-14: 14px !default;
+$font-size-16: 16px !default;
 $font-size-20: 20px !default;
 $font-size-24: 24px !default;
 $font-size-40: 40px !default;

@@ -1,5 +1,5 @@
-{{ $paginate := .Paginator }}  {{/* . 대신 .Paginator를 명시적으로 호출 */}}
-{{ if and $paginate (gt $paginate.TotalPages 1) }}
+{{ $paginate := . }}
+{{ if gt $paginate.TotalPages 1 }}
 <div id="pagination-anchor"></div>
 <nav class="pagination">
   {{ $currentPage := $paginate.PageNumber }}

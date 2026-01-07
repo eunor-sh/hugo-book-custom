@@ -1,0 +1,207 @@
+{{ define "main" }}
+<article class="markdown book-article">
+
+<header class="categories-header">
+  <h1><i class="fa-solid fa-folder"></i> {{ .Title | default (.Type | title) }}</h1>
+</header>
+
+<div class="categories-tree">
+  {{ .Scratch.Delete "categories" }}
+
+  <!-- Collect all unique category paths from posts -->
+  {{ range $.Site.RegularPages }}
+    {{ with .Param "categories" }}
+      {{ $categories := . }}
+      {{ $typeStr := printf "%T" $categories }}
+
+      <!-- Handle array-type categories -->
+      {{ if or (eq $typeStr "[]interface {}") (eq $typeStr "[]string") }}
+        {{ $.Scratch.Delete "category" }}
+        {{ range $index, $category := $categories }}
+          <!-- Build hierarchical path progressively) -->
+          {{ $category := (printf `/%s` ($category | urlize)) }}
+          {{ $.Scratch.Add "category" $category }}
+          {{ $.Scratch.Add "categories" (slice ($.Scratch.Get "category")) }}
+        {{ end }}
+
+      <!-- Handle string-type categories -->
+      {{ else if eq $typeStr "string" }}
+        {{ $.Scratch.Delete "category" }}
+        {{ $category := (printf `/%s` ($categories | urlize)) }}
+        {{ $.Scratch.Add "category" $category }}
+        {{ $.Scratch.Add "categories" (slice ($.Scratch.Get "category")) }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+
+  <!-- Get unique and sorted category paths -->
+  {{ $categories := uniq (.Scratch.Get "categories") | sort }}
+
+  <!-- Render hierarchical categories tree structure -->
+  <ul class="categories-list">
+    {{ range $index, $value := $categories }}
+      {{ $categoryTerms := (split (strings.TrimPrefix "/" .) "/") }}
+      {{ $depth := (len $categoryTerms) }}
+      {{ $path := strings.TrimPrefix "/" $value }}
+
+      {{ with $.Site.GetPage (printf `/categories/%s` $path) }}
+        {{ $linkTarget := . }}
+
+        <!-- Calculate post count for hierarchical categories -->
+        {{ $categoryCount := 0 }}
+        {{ range $.Site.RegularPages }}
+          {{ if .Params.categories }}
+            {{ $postCategories := .Params.categories }}
+            {{ $typeStr := printf "%T" $postCategories }}
+            {{ if or (eq $typeStr "[]interface {}") (eq $typeStr "[]string") }}
+
+              <!-- Parent categories: count all posts starting with this category -->
+              {{ if eq $depth 1 }}
+                {{ if gt (len $postCategories) 0 }}
+                  {{ $category0 := index $postCategories 0 | urlize }}
+                  {{ $term0 := index $categoryTerms 0 }}
+                  {{ if eq $category0 $term0 }}
+                    {{ $categoryCount = add $categoryCount 1 }}
+                  {{ end }}
+                {{ end }}
+
+              <!-- Child categories: count only posts matching hierarchical category -->
+              {{ else if eq $depth 2 }}
+                {{ if ge (len $postCategories) 2 }}
+                  {{ $category0 := index $postCategories 0 | urlize }}
+                  {{ $category1 := index $postCategories 1 | urlize }}
+                  {{ $term0 := index $categoryTerms 0 }}
+                  {{ $term1 := index $categoryTerms 1 }}
+                  {{ $matches0 := eq $category0 $term0 }}
+                  {{ $matches1 := eq $category1 $term1 }}
+                  {{ if and $matches0 $matches1 }}
+                    {{ $categoryCount = add $categoryCount 1 }}
+                  {{ end }}
+                {{ end }}
+              {{ end }}
+
+            <!-- Handle string-type categories -->
+            {{ else if eq $typeStr "string" }}
+              {{ if eq $depth 1 }}
+                {{ $category2 := $postCategories | urlize }}
+                {{ $term2 := index $categoryTerms 0 }}
+                {{ if eq $category2 $term2 }}
+                  {{ $categoryCount = add $categoryCount 1 }}
+                {{ end }}
+              {{ end }}
+            {{ end }}
+          {{ end }}
+        {{ end }}
+
+        <!-- Calculate tree depth of adjacent categories for proper HTML nesting -->
+        {{ $depthPrev := 0 }}
+        {{ if ge $index 1 }}
+          {{ $categoryPrev := index $categories (sub $index 1) }}
+          {{ $depthPrev = len (split (strings.TrimPrefix "/" $categoryPrev) "/") }}
+        {{ end }}
+
+        {{ $depthNext := 0 }}
+        {{ if lt $index (sub (len $categories) 1) }}
+          {{ $categoryNext := index $categories (add $index 1) }}
+          {{ $depthNext = len (split (strings.TrimPrefix "/" $categoryNext) "/") }}
+        {{ end }}
+
+        <!-- Open <li> tag when moving to same or shallower depth -->
+        {{ if or (le $depth $depthPrev) (eq $index 0) }}
+          <li>
+        {{ end }}
+        
+        <!-- Open nested <ul><li> when going deeper in tree -->
+        {{ if and (gt $depth $depthPrev) (ne $index 0) }}
+          <ul class="categories-list"><li>
+        {{ end }}
+
+        <!-- Render category link with post count -->
+        <a href="{{ .RelPermalink }}" class="category-item">
+          {{ if eq $depth 1 }}
+            <i class="fa-solid fa-folder"></i>
+          {{ else if eq $depth 2 }}
+            <i class="fa-solid fa-file"></i>
+          {{ end }}
+          <span>{{ .LinkTitle | default .Data.Term | default $path }}</span>
+          <span class="category-count">{{ printf "(%d)" $categoryCount }}</span>
+        </a>
+
+        <!-- Collect posts belonging to this exact category path for preview list -->
+        {{ $.Scratch.Delete "pages" }}
+        {{ range $.Site.RegularPages }}
+          {{ $page := . }}
+          {{ with .Param "categories" }}
+            {{ $categories := . }}
+            {{ $typeStr := printf "%T" $categories }}
+            {{ $.Scratch.Delete "category" }}
+
+            <!-- Reconstruct category path from post's categories array -->
+            {{ if or (eq $typeStr "[]interface {}") (eq $typeStr "[]string") }}
+              {{ range $categories }}
+                {{ $category := (printf `/%s` (. | urlize)) }}
+                {{ $.Scratch.Add "category" $category }}
+              {{ end }}
+            {{ else if eq $typeStr "string" }}
+              {{ $category := (printf `/%s` ($categories | urlize)) }}
+              {{ $.Scratch.Add "category" $category }}
+            {{ end }}
+
+            <!-- Add page if its category path matches current category -->
+            {{ $category := $.Scratch.Get "category" }}
+            {{ if eq $value $category }}
+              {{ $.Scratch.Add "pages" (slice $page) }}
+            {{ end }}
+          {{ end }}
+        {{ end }}
+        {{ $pages := $.Scratch.Get "pages" }}
+
+        <!-- Render preview list of posts (limited to first N posts) -->
+        {{ with $pages }}
+          {{ $rawPages := . }}
+          {{ $limit := 3 }}
+          {{ if ge $limit 0 }}
+            {{ $pages = $pages | first $limit }}
+          {{ end }}
+
+          <ul class="category-posts">
+            {{ range $pages }}
+              <li>
+                <a href="{{ .RelPermalink }}" class="category-post">
+                  <i class="fa-solid fa-newspaper"></i>
+                  {{ .LinkTitle }}
+                </a>
+              </li>
+            {{ end }}
+
+            <!-- Show "more" link if there are additional posts beyond the limit -->
+            {{ if and (gt $limit 0) (gt (len $rawPages) $limit) }}
+              {{ with $linkTarget }}
+                <li>
+                  <a href="{{ .RelPermalink }}" class="category-post more">더 보기...</a>
+                </li>
+              {{ end }}
+            {{ end }}
+          </ul>
+        {{ end }}
+
+        <!-- Close nested <ul><li> tags when returning to shallower depth -->
+        {{ if and (gt $depth $depthNext) (ne $index (sub (len $categories) 1)) }}
+          {{ range seq (sub $depth $depthNext) }}
+            {{ if le . (sub $depth $depthNext) }}
+              </li></ul>
+            {{ end }}
+          {{ end }}
+        {{ end }}
+
+        <!-- Close <li> tag when at same or shallower depth than next category -->
+        {{ if ge $depth $depthNext }}
+          </li>
+        {{ end }}
+      {{ end }}
+    {{ end }}
+  </ul>
+</div>
+
+</article>
+{{ end }}

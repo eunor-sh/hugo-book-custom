@@ -1,22 +1,36 @@
 <article class="post-item">
  
   <div class="post-meta">
-    <!-- 게시글 작성일 -->
     <time datetime="{{ .Date.Format "2006-01-02" }}">
       {{ .Date.Format "2006년 01월 02일" }}
     </time>
-    <!-- 카테고리 목록이 추가될 위치 -->
+    <!-- 게시글이 가진 부모-자식 카테고리 속성을 표시 -->
+    {{ if .Params.categories }}
+    <div class="post-categories">
+      {{ $parentCategory := partial "categories/value-first" .Params.categories }}
+      {{- if $parentCategory -}}
+        <a href="{{ "/categories/" | relURL }}{{ $parentCategory | urlize }}/" class="category">
+          <i class="fa-solid fa-folder"></i> {{ $parentCategory }}
+        </a>
+ 
+        {{ $childCategory := partial "categories/value-second" .Params.categories }}
+        {{- if $childCategory -}}
+        <a href="{{ "/categories/" | relURL }}{{ $parentCategory | urlize }}/{{ $childCategory | urlize }}/" class="category">
+        <i class="fa-solid fa-file"></i> {{ $childCategory }}
+        </a>
+        {{- end -}}
+      {{- end -}}
+    </div>
+    {{ end }}
   </div>
  
   <div class="post-content-area{{ if .Params.cover }} has-cover{{ end }}">
     <div class="post-text-area">
-      <!-- 게시글 제목 -->
       <h2 class="post-title">
         <a href="{{ .RelPermalink }}">{{ .Title }}</a>
       </h2>
  
-      <!-- 게시글 요약 -->
-      {{ $summary := cond .Description .Description (cond .Summary .Summary "") }}
+      {{- $summary := cond .Description .Description (cond .Summary .Summary "") -}}
       {{ if $summary }}
       <div class="post-summary">
         {{ $summary | plainify | truncate 148 }}
@@ -26,10 +40,16 @@
       </div>
       {{ end }}
  
-      <!-- 태그 목록이 추가될 위치 -->
+      <!-- 게시글이 가진 태그 속성을 표시 -->
+      {{ if .Params.tags }}
+      <div class="post-tags">
+        {{ range first 5 .Params.tags }}
+        <a href="{{ "/tags/" | relURL }}{{ . | urlize }}/" class="tag">#{{ . }}</a>
+        {{ end }}
+      </div>
+      {{ end }}
     </div>
  
-    <!-- 커버 이미지 -->
     {{ if .Params.cover }}
     <div class="post-cover">
       <img src="{{ .Params.cover | absURL }}" alt="Cover Image" class="post-cover-img">

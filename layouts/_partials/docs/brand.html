@@ -22,7 +22,7 @@
   <a href="{{ .Site.Params.BookMenu.discordLink }}" target="_blank" title="Discord" {{ if not .Site.Params.BookMenu.discordLink }}class="disabled"{{ end }}>
     <i class="fa-brands fa-discord" style="font-size: 30px;"></i>
   </a>
-  <a href="{{ .Site.Params.BookMenu.folderLink }}" target="_blank" title="Folder" {{ if not .Site.Params.BookMenu.folderLink }}class="disabled"{{ end }}>
+  <a href="{{ "/categories/" | relURL }}" title="Categories">
     <i class="fa-solid fa-folder-open" style="font-size: 30px;"></i>
   </a>
   <a href="{{ "/tags/" | relURL }}" title="Tags">

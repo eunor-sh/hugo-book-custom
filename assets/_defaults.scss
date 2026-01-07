@@ -23,10 +23,13 @@ $toc-width: 16rem !default;
 
 $mobile-breakpoint: $menu-width + $body-min-width * 1.2 + $toc-width !default;
 
+$border-radius: 4px !default;
+
 $font-size-base: 16px !default;
 $font-size-12: 12px !default;
 $font-size-14: 14px !default;
 $font-size-16: 16px !default;
+$font-size-18: 18px !default;
 $font-size-20: 20px !default;
 $font-size-24: 24px !default;
 $font-size-40: 40px !default;
@@ -112,3 +115,7 @@ $font-size-40: 40px !default;
   --color-accent-#{$name}: #{$color};
   --color-accent-#{$name}-tint: #{rgba($color, $tint)};
 }
+
+// 커스텀 변수
+$button-color-default: #e9ecef;
+$button-color-hover: #dfdfdf;

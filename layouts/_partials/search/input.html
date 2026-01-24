@@ -1,11 +1,9 @@
 {{ if default true .Site.Params.BookSearch }}
-<div class="book-search hidden">
-  <input id="book-search-input" type="text" 
-    placeholder="{{ partial "docs/text/i18n" "Search" }}"
-    aria-label="{{ partial "docs/text/i18n" "Search" }}"
-    maxlength="64" data-hotkeys="s/" />
+<div class="book-search">
+  <button id="book-search-trigger" class="book-search-trigger" type="button" aria-label="{{ partial "docs/text/i18n" "검색" }}">
+    <i class="fa-solid fa-magnifying-glass book-search-icon-inline" aria-hidden="true"></i>
+    <span class="search-placeholder" data-i18n-id="search.input.label" data-i18n-text="{&quot;`/`&quot;: &quot;$code&quot;}"><code>/</code> 를 눌러 검색하세요</span>
+  </button>
   <div class="book-search-spinner hidden"></div>
-  <ul id="book-search-results"></ul>
 </div>
-<script>document.querySelector(".book-search").classList.remove("hidden")</script>
 {{ end }}

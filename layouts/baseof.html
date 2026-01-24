@@ -1,10 +1,13 @@
 <!DOCTYPE html>
-<html lang="{{ default .Site.Language.Lang .Site.LanguageCode }}" dir="{{ default "ltr" .Site.Language.LanguageDirection }}">
+<html lang="{{ default .Site.Language.Lang .Site.LanguageCode }}" dir="{{ default "ltr" .Site.Language.LanguageDirection }}" data-theme="{{ default "light" .Site.Params.BookTheme }}">
 <head>
   {{ partial "docs/html-head" . }}
   {{ partial "docs/inject/head" . }}
 </head>
 <body dir="{{ default "ltr" .Site.Language.LanguageDirection }}" class="book-kind-{{ .Kind }} book-type-{{ .Type }}{{ with .Layout }} book-layout-{{ . }}{{ end }}">
+  <div class="theme-toggle">
+    <input type="checkbox" class="color_choice color_animate" id="mode" aria-label="Toggle dark mode">
+  </div>
   <input type="checkbox" class="hidden toggle" id="menu-control" />
   <input type="checkbox" class="hidden toggle" id="toc-control" />
   <main class="container flex">
@@ -33,6 +36,7 @@
     {{ template "toc-container" . }} <!-- Table of Contents -->
   </main>
 
+  {{ partial "search/modal" . }}
   {{ partial "docs/inject/body" . }}
 </body>
 </html>

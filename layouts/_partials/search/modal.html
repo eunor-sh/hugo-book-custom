@@ -1,0 +1,25 @@
+{{ if default true .Site.Params.BookSearch }}
+<div id="book-search-modal" class="book-search-modal hidden" aria-hidden="true">
+  <div class="book-search-dialog" role="dialog" aria-modal="true">
+    <div class="book-search-header">
+      <span class="book-search-title">{{ partial "docs/text/i18n" "검색" }}</span>
+      <button id="book-search-close" class="book-search-close" type="button" aria-label="Close search">
+        <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="book-search-input-row">
+      <input id="book-search-input" type="text"
+        placeholder="{{ partial "docs/text/i18n" "Search" }}"
+        aria-label="{{ partial "docs/text/i18n" "Search" }}"
+        maxlength="64" data-hotkeys="s/" />
+      <button class="book-search-icon" type="button" aria-label="Search">
+        <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+      </button>
+      <div class="book-search-spinner hidden"></div>
+    </div>
+    <div class="book-search-results-wrap">
+      <ul id="book-search-results"></ul>
+    </div>
+  </div>
+</div>
+{{ end }}

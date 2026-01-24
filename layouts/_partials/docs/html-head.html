@@ -74,3 +74,5 @@ https://github.com/alex-shpak/hugo-book
 
 {{- $tocHighlightJS := resources.Get "toc-highlight.js" | resources.ExecuteAsTemplate "toc-highlightjs" . | resources.Minify | resources.Fingerprint }}
 <script defer src="{{ partial "docs/links/resource-precache" $tocHighlightJS }}" {{ template "integrity" $tocHighlightJS }}></script>
+
+<script defer src="{{ "theme-toggle.js" | relURL }}"></script>

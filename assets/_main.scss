@@ -366,7 +366,7 @@ body[dir="rtl"] .book-menu {
   right: 0;
  
   margin-bottom: $padding-16;
-  margin-right: $padding-16;
+  margin-right: calc(#{$padding-16} + 5rem);
  
   display: flex;
   align-items: flex-end;

@@ -89,6 +89,9 @@ $font-size-40: 40px !default;
   --gray-200: #5c6165;
   --gray-500: #999d9f;
 
+  --toc-font-color: #e9ecef;
+  --toc-active-color: #84b2ff;
+
   @include accent("default", #64748b);
   @include accent("note", #4486dd);
   @include accent("tip", #3bad3b);

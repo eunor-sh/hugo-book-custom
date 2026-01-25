@@ -811,10 +811,12 @@
   @include theme-dark;
 }
 
+/* 다크모드 위젯: 맨위/맨아래 버튼과 같은 열, 그 위에 배치 (5rem 왼쪽) */
 .theme-toggle {
   position: fixed;
-  top: 16px;
-  right: 16px;
+  bottom: 7rem;
+  right: 0;
+  margin-right: calc(1rem + 5rem);
   z-index: 1000;
 }
 
@@ -855,7 +857,42 @@
   transition: background 0.2s ease, border-color 0.2s ease;
 }
 
+.theme-icons {
+  position: relative;
+  pointer-events: none;
+}
+
+.theme-icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+  transition: opacity 0.2s ease;
+}
+
+.light-icon {
+  left: 4px;
+  opacity: 1;
+}
+
+.dark-icon {
+  right: 4px;
+  opacity: 0;
+}
+
+.color_choice:checked ~ .theme-icons .light-icon {
+  opacity: 0;
+}
+
+.color_choice:checked ~ .theme-icons .dark-icon {
+  opacity: 1;
+}
+
 :root[data-theme="dark"] .book-menu,
 :root[data-theme="dark"] .book-menu .book-menu-content {
-  background: #1f1f1f;
+  background: #343a40;
+}
+
+:root[data-theme="dark"] .book-menu .book-menu-content {
+  border-right: 1px solid var(--gray-500);
 }

@@ -16,7 +16,10 @@
   {{ end }}
  
   <div class="list-header">
-    <h1><i class="fa-solid fa-file"></i> {{ .Title }}</h1>
+    <h1>
+      {{ partial "categories/icon" (dict "name" .Title "defaultIcon" "fa-solid fa-file") }}
+      {{ .Title }}
+    </h1>
     <p>전체 글 <em class="list-count">{{ len $pages }}</em></p>
   </div>
  
@@ -27,7 +30,10 @@
     <div class="category-chips">
       <div class="category-item">
         <a href="{{ "/categories/" | relURL }}{{ .Params.parent | urlize }}/" class="category-link">
-          <span class="category-name"><i class="fa-solid fa-folder-open"></i> {{ .Params.parent }}</span>
+          <span class="category-name">
+            {{ partial "categories/icon" (dict "name" .Params.parent "defaultIcon" "fa-solid fa-folder-open") }}
+            {{ .Params.parent }}
+          </span>
         </a>
       </div>
     </div>

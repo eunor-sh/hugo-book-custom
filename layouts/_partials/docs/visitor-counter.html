@@ -1,87 +1,70 @@
-<div class="book-visitor-counter">
-  <div class="visitor-counter-item">
-    <span class="visitor-label">총 방문자</span>
-    <span class="visitor-count" id="total-visitors">--</span>
-  </div>
-  <div class="visitor-counter-item">
-    <span class="visitor-label">오늘</span>
-    <span class="visitor-count" id="today-visitors">--</span>
-  </div>
-  <div class="visitor-counter-item">
-    <span class="visitor-label">어제</span>
-    <span class="visitor-count" id="yesterday-visitors">--</span>
-  </div>
+<div class="visitor-widget" aria-label="총 방문자">
+  <div class="visitor-widget__label">총 방문자</div>
+  <div class="visitor-widget__value" id="total-visitors">--</div>
 </div>
 
 <style>
-.book-visitor-counter {
-  padding: 1rem;
-  border-bottom: 1px solid var(--color-border);
-  margin-bottom: 1rem;
-}
-
-.visitor-counter-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.5rem;
-  font-size: 0.875rem;
-}
-
-.visitor-counter-item:last-child {
-  margin-bottom: 0;
-}
-
-.visitor-label {
-  color: var(--color-text-muted);
-  font-weight: 500;
-}
-
-.visitor-count {
-  font-weight: 600;
-  color: var(--color-text);
-  font-family: 'Courier New', monospace;
-  background: var(--color-background);
-  padding: 0.125rem 0.25rem;
-  border-radius: 3px;
-  min-width: 2rem;
+.visitor-widget {
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.25rem;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  background: var(--color-background-alt);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
   text-align: center;
 }
 
-@media (prefers-color-scheme: dark) {
-  .visitor-count {
-    background: var(--color-background-alt);
-  }
+.visitor-widget__label {
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  font-weight: 600;
+  margin-bottom: 1rem;
 }
+
+.visitor-widget__value {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--color-text);
+  font-family: 'Courier New', monospace;
+}
+
+[data-theme="dark"] .visitor-widget {
+  border: 1px solid var(--gray-500);
+}
+
+
 </style>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  // Counter.dev API를 사용한 방문자 카운터
-  // 실제 구현시에는 본인의 counter.dev 계정으로 교체 필요
-  const siteId = '<script src="https://cdn.counter.dev/script.js" data-id="5f708f76-d485-4836-82a2-8249385d29a3" data-utcoffset="9"></script>'; // counter.dev에서 얻은 사이트 ID로 변경하세요
+  // GoatCounter로 방문자 카운터 표시
+  const siteCode = '{{ .Site.Params.goatCounterCode | default "" }}';
 
-  // 방문자 수 업데이트 함수
-  function updateVisitorCounts() {
-    // Counter.dev API 호출
-    fetch(`https://api.counter.dev/v1/${siteId}`)
+  if (!siteCode) {
+    console.log('GoatCounter site code is missing.');
+    return;
+  }
+
+  const totalUrl = `https://${siteCode}.goatcounter.com/counter/TOTAL.json`;
+
+  function fetchCount(url, elementId) {
+    fetch(url)
       .then(response => response.json())
       .then(data => {
-        document.getElementById('total-visitors').textContent = data.total || '--';
-        document.getElementById('today-visitors').textContent = data.today || '--';
-        document.getElementById('yesterday-visitors').textContent = data.yesterday || '--';
+        document.getElementById(elementId).textContent = data.count || '0';
       })
       .catch(error => {
-        console.log('Visitor counter failed to load:', error);
-        // API 실패시 기본값 유지
+        console.log('GoatCounter counter failed to load:', error);
       });
   }
 
-  // 페이지 로드 시 카운터 업데이트
-  updateVisitorCounts();
-
-  // 페이지뷰 카운트 증가 (선택사항)
-  fetch(`https://api.counter.dev/v1/${siteId}/hit`, { method: 'POST' })
-    .catch(error => console.log('Failed to increment counter:', error));
+  fetchCount(totalUrl, 'total-visitors');
 });
 </script>
+
+{{- with .Site.Params.goatCounterCode -}}
+  <script data-goatcounter="https://{{ . }}.goatcounter.com/count"
+    async src="//gc.zgo.at/count.js"></script>
+{{- end -}}

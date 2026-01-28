@@ -1,0 +1,13 @@
+{{- $name := .name | default "" -}}
+{{- $key := lower $name -}}
+{{- $icons := index site.Data "category-icons" -}}
+{{- $icon := "" -}}
+{{- if and $icons $key -}}
+  {{- $icon = index $icons $key -}}
+{{- end -}}
+
+{{- if $icon -}}
+  <img class="category-icon" src="{{ $icon | relURL }}" alt="{{ $name }}" />
+{{- else -}}
+  <i class="{{ .defaultIcon }}"></i>
+{{- end -}}

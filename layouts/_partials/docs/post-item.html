@@ -10,13 +10,15 @@
       {{ $parentCategory := partial "categories/value-first" .Params.categories }}
       {{- if $parentCategory -}}
         <a href="{{ "/categories/" | relURL }}{{ $parentCategory | urlize }}/" class="category">
-          <i class="fa-solid fa-folder"></i> {{ $parentCategory }}
+          {{ partial "categories/icon" (dict "name" $parentCategory "defaultIcon" "fa-solid fa-folder") }}
+          {{ $parentCategory }}
         </a>
  
         {{ $childCategory := partial "categories/value-second" .Params.categories }}
         {{- if $childCategory -}}
         <a href="{{ "/categories/" | relURL }}{{ $parentCategory | urlize }}/{{ $childCategory | urlize }}/" class="category">
-        <i class="fa-solid fa-file"></i> {{ $childCategory }}
+          {{ partial "categories/icon" (dict "name" $childCategory "defaultIcon" "fa-solid fa-file") }}
+          {{ $childCategory }}
         </a>
         {{- end -}}
       {{- end -}}

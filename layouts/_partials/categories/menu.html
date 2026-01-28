@@ -53,7 +53,7 @@
       <input type="checkbox" class="hidden toggle" id="cat-{{ $parent | urlize }}" />
       <label for="cat-{{ $parent | urlize }}" class="categories-toggle categories-link">
         <a href="/categories/{{ $parent | urlize }}/">
-          <i class="fa-solid fa-folder"></i>
+          {{ partial "categories/icon" (dict "name" $parent "defaultIcon" "fa-solid fa-folder") }}
           {{ $parent }}
           <span class="category-count">({{ $parentCount }})</span>
         </a>
@@ -74,7 +74,7 @@
  
         <li class="categories-link">
           <a href="/categories/{{ $parent | urlize }}/{{ $child | urlize }}/">
-            <i class="fa-solid fa-file"></i>
+            {{ partial "categories/icon" (dict "name" $child "defaultIcon" "fa-solid fa-file") }}
             {{ $child }}
             <span class="category-count">({{ $childCount }})</span>
           </a>
@@ -83,7 +83,7 @@
       </ul>
       {{ else }}
       <a href="/categories/{{ $parent | urlize }}/">
-        <i class="fa-solid fa-file"></i>
+        {{ partial "categories/icon" (dict "name" $parent "defaultIcon" "fa-solid fa-file") }}
         {{ $parent }}
         <span class="category-count">({{ $parentCount }})</span>
       </a>

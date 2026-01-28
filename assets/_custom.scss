@@ -215,15 +215,17 @@
   }
  
   &[href]:visited {
-    color: var(--body-font-color);
+    color: var(--body-font-color) !important;
   }
  
   &[href]:hover {
     background: $button-color-hover !important;
-    color: #000 !important;
+    color: var(--body-font-color) !important;
     text-decoration: none;
   }
 }
+
+
 
 .pagination {
   // 이전 버튼, 페이지 링크, 다음 버튼을 정렬
@@ -686,6 +688,52 @@
   font-size: 0.9rem;
 }
 
+.category-icon {
+  width: 1em;
+  height: 1em;
+  object-fit: contain;
+  vertical-align: -0.125em;
+}
+
+.list-header h1 {
+  display: inline-flex;
+  align-items: center;
+  gap: $padding-8;
+
+  .category-icon {
+    width: 1.2em;
+    height: 1.2em;
+  }
+}
+
+.category-name {
+  display: inline-flex;
+  align-items: center;
+  gap: $padding-4;
+}
+
+.categories-list .category-item {
+  display: inline-flex;
+  align-items: center;
+  gap: $padding-4;
+
+  .category-icon {
+    width: 1.2em;
+    height: 1.2em;
+  }
+}
+
+.post-categories .category {
+  display: inline-flex;
+  align-items: center;
+  gap: $padding-4;
+}
+
+.post-categories .category .category-icon {
+  width: 0.95em;
+  height: 0.95em;
+}
+
 .book-search-modal.hidden {
   display: none;
 }
@@ -811,12 +859,10 @@
   @include theme-dark;
 }
 
-/* 다크모드 위젯: 맨위/맨아래 버튼과 같은 열, 그 위에 배치 (5rem 왼쪽) */
 .theme-toggle {
   position: fixed;
-  bottom: 7rem;
-  right: 0;
-  margin-right: calc(1rem + 5rem);
+  top: 16px;
+  right: 16px;
   z-index: 1000;
 }
 
@@ -857,42 +903,8 @@
   transition: background 0.2s ease, border-color 0.2s ease;
 }
 
-.theme-icons {
-  position: relative;
-  pointer-events: none;
-}
-
-.theme-icon {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 14px;
-  transition: opacity 0.2s ease;
-}
-
-.light-icon {
-  left: 4px;
-  opacity: 1;
-}
-
-.dark-icon {
-  right: 4px;
-  opacity: 0;
-}
-
-.color_choice:checked ~ .theme-icons .light-icon {
-  opacity: 0;
-}
-
-.color_choice:checked ~ .theme-icons .dark-icon {
-  opacity: 1;
-}
-
 :root[data-theme="dark"] .book-menu,
 :root[data-theme="dark"] .book-menu .book-menu-content {
-  background: #343a40;
-}
-
-:root[data-theme="dark"] .book-menu .book-menu-content {
+  background: var(--body-background);
   border-right: 1px solid var(--gray-500);
 }
